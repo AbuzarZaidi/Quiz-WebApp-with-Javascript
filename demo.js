@@ -6,6 +6,7 @@ let submit=document.getElementById('submit');
 addQuestion.addEventListener('click',(e)=>{
   
   let div=document.createElement('div');
+  div.setAttribute('id',`${i}div`)
     let div1=document.createElement('div');
     div1.setAttribute('class','input-group input-group-lg');
     let span1=document.createElement('span');
