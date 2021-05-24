@@ -2,13 +2,16 @@ let createQuizBtn = document.getElementById("createQuizBtn");
 let createQuizInformation = document.getElementById("createQuizInformation");
 let createQuizQuestion = document.getElementById("createQuizQuestion");
 let showQuestionBtn = "";
-let createdQuizData = [];
-let createQuizQuestionArray=[];
+let QuizData = [];
+let multipleQuizData = [];
+let singleQuizArray=[];
 let addQuestionBtn="";
 let quizCreatedBtn="";
+// localStorage.clear();
 //on click create quiz button
 let i=1;
 createQuizBtn.addEventListener("click", (e) => {
+  i=1;
   e.preventDefault();
   console.log("createQuiz.js",i);
   i++
@@ -63,7 +66,7 @@ const collectInfo = () => {
     quizId,
     quizPassword,
   };
-  createdQuizData.push(infoObj);
+  singleQuizArray.push(infoObj);
 };
 // =========================================---on click next button
 const quizQuestion = () => {
@@ -72,7 +75,7 @@ const quizQuestion = () => {
     console.log("show Question");
     document.getElementById("createQuizInformation").style.display = "none";
     collectInfo();
-    console.log(createdQuizData);
+   // console.log(createdQuizData);
     showQuizQuestion();
     console.log(quizCreatedBtn,addQuestionBtn);
     addAnotherButton();
@@ -113,6 +116,11 @@ const showQuizQuestion=()=>{
 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
 placeholder="option d" id="1d">
 </div>
+<div class="input-group input-group-sm mb-3">
+<span class="input-group-text" id="inputGroup-sizing-sm">ans)</span>
+<input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+placeholder="answer" id="1ans">
+</div>
 </div>`
 addQuestionBtn=document.getElementById('addQuestionBtn');
 quizCreatedBtn=document.getElementById('quizCreatedBtn');
@@ -128,11 +136,11 @@ const addAnotherButton=()=>{
       let div1=document.createElement('div');
       div1.setAttribute('class','input-group input-group-lg');
       let span1=document.createElement('span');
-      span1.setAttribute('class','input-group-text')
+      span1.setAttribute('class','input-group-text mb-3')
      span1.innerText=`${i}`;
      let input1=document.createElement('input');
      input1.setAttribute('type','text');
-     input1.setAttribute('class','form-control')
+     input1.setAttribute('class','form-control mb-3')
      input1.setAttribute('id',`${i}ques`);
      div1.appendChild(span1);
      div1.appendChild(input1);
@@ -189,6 +197,19 @@ const addAnotherButton=()=>{
      div5.appendChild(span5);
       div5.appendChild(input5);
       div.appendChild(div5);
+       //answer
+     let div6=document.createElement('div');
+     div6.setAttribute('class','input-group input-group-sm mb-3');
+     let span6=document.createElement('span');
+      span6.setAttribute('class','input-group-text')
+     span6.innerText='ans)';
+     let input6=document.createElement('input');
+     input6.setAttribute('type','text');
+     input6.setAttribute('class','form-control')
+     input6.setAttribute('id',`${i}ans`);
+     div6.appendChild(span6);
+      div6.appendChild(input6);
+      div.appendChild(div6);
      document.getElementById("createQuizQuestion").appendChild(div);
      i++;
   })
@@ -207,10 +228,14 @@ const quizCreatedsuccessfully=(e)=>{
       let c=document.getElementById(`${j}c`).value;
       let d=document.getElementById(`${j}d`).value;
       const obj={ques,a,b,c,d};
-      createQuizQuestionArray.push(obj);
+      singleQuizArray.push(obj);
   
     }
-    console.log(createQuizQuestionArray);
+    console.log(singleQuizArray);
+    localStorage.setItem("quizArray",JSON.stringify(singleQuizArray));
+   // multipleQuizData.push( singleQuizArray);
+   // console.log(multipleQuizData);
+    
     document.getElementById("createQuizQuestion").style.display = "none";
    document.getElementById("starter").style.display = "block";
   })
