@@ -74,10 +74,10 @@ const quizQuestion = () => {
     e.preventDefault();
     console.log("show Question");
     document.getElementById("createQuizInformation").style.display = "none";
+    document.getElementById("createQuizQuestion").style.display = "block";
     collectInfo();
     // console.log(createdQuizData);
     showQuizQuestion();
-    console.log(quizCreatedBtn, addQuestionBtn);
     addAnotherButton();
     quizCreatedsuccessfully();
   });
@@ -127,7 +127,6 @@ placeholder="answer" id="1ans">
 // =================================---add question button
 const addAnotherButton = () => {
   addQuestionBtn.addEventListener("click", (e) => {
-    console.log("donebutton");
 
     let div = document.createElement("div");
     div.setAttribute("id", `${i}div`);
@@ -216,7 +215,6 @@ const addAnotherButton = () => {
 //===================================---done button
 const quizCreatedsuccessfully = (e) => {
   quizCreatedBtn.addEventListener("click", (e) => {
-    console.log("done");
     for (let j = 1; j < i; j++) {
       let ques = document.getElementById(`${j}ques`).value;
       let a = document.getElementById(`${j}a`).value;
@@ -228,7 +226,7 @@ const quizCreatedsuccessfully = (e) => {
       singleQuizArray.push(obj);
     }
     console.log(singleQuizArray);
-    localStorage.setItem("quizArray", JSON.stringify(singleQuizArray));
+   // localStorage.setItem("quizArray", JSON.stringify(singleQuizArray));
     // multipleQuizData.push( singleQuizArray);
     // console.log(multipleQuizData);
 
