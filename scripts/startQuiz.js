@@ -31,7 +31,7 @@ let a=0;
 //use to check id and password
 const checkCredentials = () => {
   console.log(a);
-      document.getElementById("startQuizCredentials").style.display = "block";
+     // document.getElementById("startQuizCredentials").style.display = "block";
   let div = document.createElement("div");
   div.setAttribute("id", "credentials");
   div.setAttribute("class", " container w-25 p-3");
@@ -119,7 +119,7 @@ const showQuestion = () => {
   document.getElementById("starter").style.display = "none";
   document.getElementById("startQuizCredentials").style.display = "none";
   
- document.getElementById("startQuizQuestion").style.display = "block";
+ //document.getElementById("startQuizQuestion").style.display = "block";
   startQuizQuestion.innerHTML += `
     <h3 >${singleQuizArray[0].quizTitle}</h3>
     <p >${singleQuizArray[0].quizDescription}</p>
@@ -215,9 +215,9 @@ const nextQuestionFunc = () => {
 const backFunc=()=>{
 backBtn.addEventListener('click',(e)=>{
   console.log('click back');
-  singleQuizArray=[]; // need to un clear later
-       document.getElementById("createQuizQuestion").style.display = "none";
-       document.getElementById("startQuizQuestion").style.display = "none";
-      document.getElementById("starter").style.display = "block";
+      //  document.getElementById("createQuizQuestion").style.display = "none";
+      //  document.getElementById("startQuizQuestion").style.display = "none";
+      // document.getElementById("starter").style.display = "block";
+      location.reload();
 })
 }
