@@ -1,29 +1,26 @@
 let createQuizBtn = document.getElementById("createQuizBtn");
-let createQuizInformation = document.getElementById("createQuizInformation");
-let createQuizQuestion = document.getElementById("createQuizQuestion");
+//let createQuizInformation = document.getElementById("createQuizInformation");
+//let createQuizQuestion = document.getElementById("createQuizQuestion");
 let showQuestionBtn = "";
 let QuizData = [];
 let multipleQuizData = [];
 let singleQuizArray = [];
 let addQuestionBtn = "";
 let quizCreatedBtn = "";
-// localStorage.clear();
-//on click create quiz button
 let i = 1;
 createQuizBtn.addEventListener("click", (e) => {
   i = 1;
   e.preventDefault();
   console.log("createQuiz.js", i);
   i++;
-  document.getElementById("starter").style.display = "none";
   showQuizInformation();
   quizQuestion();
 });
 
 // ===========================================---function for quiz info
 const showQuizInformation = () => {
-  document.getElementById("createQuizInformation").style.display = "block";
-  createQuizInformation.innerHTML = `<div class="container w-50 p-3" id="quizInfo">
+  let starter = document.getElementById("starter");
+  starter.innerHTML = `<div class="container" id="quizInfo">
     <h1>Create Quiz</h1>
     <hr>
     <form>
@@ -72,11 +69,10 @@ const collectInfo = () => {
 const quizQuestion = () => {
   showQuestionBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log("show Question");
-    document.getElementById("createQuizInformation").style.display = "none";
-    document.getElementById("createQuizQuestion").style.display = "block";
+   // console.log("show Question");
+  //  document.getElementById("createQuizInformation").style.display = "none";
+  //  document.getElementById("createQuizQuestion").style.display = "block";
     collectInfo();
-    // console.log(createdQuizData);
     showQuizQuestion();
     addAnotherButton();
     quizCreatedsuccessfully();
@@ -85,8 +81,8 @@ const quizQuestion = () => {
 
 //=======================================show first quiz question
 const showQuizQuestion = () => {
-  document.getElementById("createQuizQuestion").style.display = "block";
-  createQuizQuestion.innerHTML = ` <div class="container ">
+  let starter = document.getElementById("starter");
+  starter.innerHTML = ` <div class="container ">
 
   <h1>Questions-</h1>
 <br>
@@ -127,7 +123,6 @@ placeholder="answer" id="1ans">
 // =================================---add question button
 const addAnotherButton = () => {
   addQuestionBtn.addEventListener("click", (e) => {
-
     let div = document.createElement("div");
     div.setAttribute("id", `${i}div`);
     let div1 = document.createElement("div");
@@ -215,6 +210,7 @@ const addAnotherButton = () => {
 //===================================---done button
 const quizCreatedsuccessfully = (e) => {
   quizCreatedBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     for (let j = 1; j < i; j++) {
       let ques = document.getElementById(`${j}ques`).value;
       let a = document.getElementById(`${j}a`).value;
@@ -225,12 +221,23 @@ const quizCreatedsuccessfully = (e) => {
       const obj = { ques, a, b, c, d, ans };
       singleQuizArray.push(obj);
     }
-    console.log(singleQuizArray);
-   // localStorage.setItem("quizArray", JSON.stringify(singleQuizArray));
-    // multipleQuizData.push( singleQuizArray);
-    // console.log(multipleQuizData);
+ //   console.log(singleQuizArray);
+    let quizArray = localStorage.getItem("quizArray");
+  //  console.log("quizArray");
+   // console.log(quizArray);
 
-    document.getElementById("createQuizQuestion").style.display = "none";
-    document.getElementById("starter").style.display = "block";
+    if (quizArray == null) {
+      multipleQuizArray = [];
+    } else {
+      multipleQuizData = JSON.parse(quizArray);
+    //  console.log("multipleQuizData");
+    //  console.log(multipleQuizData);
+    }
+    multipleQuizData.push(singleQuizArray);
+    localStorage.setItem("quizArray", JSON.stringify(multipleQuizData));
+   // console.log(multipleQuizData);
+    location.reload();
+    singleQuizArray = [];
+    multipleQuizArray = [];
   });
 };

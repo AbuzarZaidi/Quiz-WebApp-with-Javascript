@@ -6,150 +6,108 @@ let nextQuestion = "";
 let quiz = "";
 let incre = 1;
 let correct = 0;
-let submitBtn="";
-let  backBtn="";
-//local storage
-// let quizArray = localStorage.getItem("quizArray");
-// if (quizArray == null) {
-//   notesObj = [];
-// } else {
-//   quiz = JSON.parse(quizArray);
-// }
-  startQuizBtn.addEventListener("click", (e) => {
+let submitBtn = "";
+let backBtn = "";
+let count = 0;
+let idFound = false;
+startQuizBtn.addEventListener("click", (e) => {
+  e.preventDefault();
 
-   
-    e.preventDefault();
-    console.log("startQuiz.js");
-    document.getElementById("starter").style.display = "none";
-    checkCredentials();
-    inputData();
+  let quizArray = localStorage.getItem("quizArray");
 
-    //console.log(quiz);
-  });
-let a=0;
+  if (quizArray == null) {
+    multipleQuizArray = [];
+  } else {
+    multipleQuizData = JSON.parse(quizArray);
+   // console.log(multipleQuizData[1][0].quizId);
 
-//use to check id and password
-const checkCredentials = () => {
-  console.log(a);
-     // document.getElementById("startQuizCredentials").style.display = "block";
-  let div = document.createElement("div");
-  div.setAttribute("id", "credentials");
-  div.setAttribute("class", " container w-25 p-3");
-  //h2
-  let h2 = document.createElement("h2");
-  h2.innerText = "Start Quiz:";
+   // console.log(multipleQuizData);
+  }
 
-  //id
-  let div1 = document.createElement("div");
-  div1.setAttribute("class", "mb-3");
-  let label1 = document.createElement("label");
-  label1.setAttribute("class", "form-label");
-  label1.innerText = "ID";
-  let input1 = document.createElement("input");
-  input1.setAttribute("type", "text");
-  input1.setAttribute("class", "form-control");
-  input1.setAttribute("id", "idCheck");
-  div1.appendChild(label1);
-  div1.appendChild(input1);
-  //password
-  let div2 = document.createElement("div");
-  div2.setAttribute("class", "mb-3");
-  let label2 = document.createElement("label");
-  label2.setAttribute("class", "form-label");
-  label2.innerText = "Password";
-  let input2 = document.createElement("input");
-  input2.setAttribute("type", "text");
-  input2.setAttribute("class", "form-control");
-  input2.setAttribute("id", "passwordCheck");
-  div2.appendChild(label2);
-  div2.appendChild(input2);
-  div.appendChild(h2);
-  div.appendChild(div1);
-  div.appendChild(div2);
-  //button
-  let button = document.createElement("button");
-  button.innerText = "Submit";
-  button.setAttribute("id", "submitBtn");
-  button.setAttribute("class", "btn btn-primary");
-  div.appendChild(button);
-  document.getElementById("startQuizCredentials").appendChild(div);
+  console.log("startQuiz.js");
+  enterCredentialsFunc();
+  submitBtnClickFunc();
+});
+
+const enterCredentialsFunc = () => {
+  let starter = document.getElementById("starter");
+  starter.innerHTML = `<div class="container " id="credentials">
+    <div class="mb-3">
+        <h3>Enter Credentials</h3>
+      <label for="label" class="form-label">ID</label>
+      <input type="text" class="form-control" id="userInputId" />
+    </div>
+    <div class="mb-3">
+      <label for="label" class="form-label">Password</label>
+      <input type="text" class="form-control" id="userInputPassword" />
+    </div>
+    <button class="btn btn-primary" id="submitBtn">Submit</button>
+  </div>`;
+  submitBtn = document.getElementById("submitBtn");
 };
-const inputData = () => {
-  console.log(a);
-  
-   submitBtn = document.getElementById("submitBtn");
- 
-  console.log(submitBtn);
-  
+
+const submitBtnClickFunc = () => {
+  // console.log(a);
+  // submitBtn = document.getElementById("submitBtn");
+  //console.log(submitBtn);
   submitBtn.addEventListener("click", (e) => {
-  
-    
-    console.log('clicked');
-    func();
-    
+    e.preventDefault();
+    // console.log("clicked");
+    userInputId = document.getElementById("userInputId").value;
+    userInputPassword = document.getElementById("userInputPassword").value;
+ //   console.log(userInputId, userInputPassword);
+    multipleQuizData.forEach((element) => {
+      if (
+        userInputId == element[0].quizId &&
+        userInputPassword == element[0].quizPassword
+      ) {
+        idFound = true;
+        showQuestion();
+        return nextQuestionFunc(count);
+      }
+      count++;
+    });
+    if (idFound == false) {
+      count = 0;
+      enterCredentialsFunc();
+      submitBtnClickFunc();
+    }
   });
 };
-const func=()=>{
-  console.log(a);
-  a++;
-  
-    inputId = document.getElementById("idCheck").value;
-    inputPassword = document.getElementById("passwordCheck").value;
-    console.log(inputId, inputPassword);
 
-    if (
-      singleQuizArray[0].quizId == inputId &&
-      singleQuizArray[0].quizPassword == inputPassword
-    ) {
-     // document.getElementById("startQuizCredentials").style.display = "none";
-     // document.getElementById("startQuizQuestion").style.display = "block";
-      showQuestion();
-      nextQuestionFunc();
-      
-    } else {
-      console.log("wrong entry");
-      document.getElementById("starter").style.display = "none";
-     checkCredentials();
-     inputData();
-   
-    }
-}
 const showQuestion = () => {
-  startQuizQuestion.innerHTML = "";
-  document.getElementById("starter").style.display = "none";
   document.getElementById("startQuizCredentials").style.display = "none";
-  
- //document.getElementById("startQuizQuestion").style.display = "block";
-  startQuizQuestion.innerHTML += `
-    <h3 >${singleQuizArray[0].quizTitle}</h3>
-    <p >${singleQuizArray[0].quizDescription}</p>
+
+  starter.innerHTML = `
+    <h3 >${multipleQuizData[count][0].quizTitle}</h3>
+    <p >${multipleQuizData[count][0].quizDescription}</p>
     `;
-  startQuizQuestion.innerHTML += `<div class="card " style="width: 50rem;">
+  starter.innerHTML += `<div class="card " style="width: 50rem;">
 
     <div class="card-body" >
-      <h6 class="card-title">${incre})${singleQuizArray[incre].ques}</h6>
+      <h6 class="card-title">${incre})${multipleQuizData[count][incre].ques}</h6>
       <div class="form-check">
         <input class="form-check-input" type="radio" name="flexRadioDefault" id="optionA">
         <label class="form-check-label" for="flexRadioDefault1" id="optionAV">
-          ${singleQuizArray[incre].a}
+          ${multipleQuizData[count][incre].a}
         </label>
       </div>
       <div class="form-check">
         <input class="form-check-input" type="radio" name="flexRadioDefault" id="optionB">
         <label class="form-check-label" for="flexRadioDefault2" id="optionBV">
-        ${singleQuizArray[incre].b}
+        ${multipleQuizData[count][incre].b}
         </label>
       </div>
       <div class="form-check">
         <input class="form-check-input" type="radio" name="flexRadioDefault" id="optionC">
         <label class="form-check-label" for="flexRadioDefault3" id="optionCV">
-        ${singleQuizArray[incre].c}
+        ${multipleQuizData[count][incre].c}
         </label>
       </div>
       <div class="form-check">
         <input class="form-check-input" type="radio" name="flexRadioDefault" id="optionD" >
         <label class="form-check-label" for="flexRadioDefault4" id="optionDV">
-       ${singleQuizArray[incre].d}
+       ${multipleQuizData[count][incre].d}
         </label>
       </div>
       <button  type="submit" class="btn btn-primary" id="nextQuestion">Next</button>
@@ -162,11 +120,8 @@ const showQuestion = () => {
   incre++;
 };
 let j = 1;
-// singleQuizArray
-const nextQuestionFunc = () => {
+const nextQuestionFunc = (count) => {
   nextQuestion.addEventListener("click", (e) => {
-    console.log(`Arrayans ${singleQuizArray[j].ans}`);
-
     let optionA = document.getElementById("optionA");
     let optionB = document.getElementById("optionB");
     let optionC = document.getElementById("optionC");
@@ -174,50 +129,44 @@ const nextQuestionFunc = () => {
     let value = "";
     if (optionA.checked) {
       value = document.getElementById("optionAV").innerText;
-      console.log(value);
+      // console.log(value);
     } else if (optionB.checked) {
       value = document.getElementById("optionBV").innerText;
-      console.log(value);
+      // console.log(value);
     } else if (optionC.checked) {
       value = document.getElementById("optionCV").innerText;
-      console.log(value);
+      // console.log(value);
     } else if (optionD.checked) {
       value = document.getElementById("optionDV").innerText;
-      console.log(value);
+      // console.log(value);
     }
-    if (value == singleQuizArray[j].ans) {
+    // console.log('ans');
+    // console.log(multipleQuizData[count][j].ans);
+    
+    
+    if (value == multipleQuizData[count][j].ans) {
       correct++;
     }
-    if (incre < singleQuizArray.length) {
+    if (incre < multipleQuizData[count].length) {
+      j++;
       showQuestion();
-      nextQuestionFunc();
+      nextQuestionFunc(count);
+      
     } else {
-      console.log(correct);
-      startQuizQuestion.innerHTML += `<h3> you got ${correct} out of ${
-        incre - 1
-      } <h3>`;
-      startQuizQuestion.innerHTML+=` <button class="btn btn-success" type="button" id="backBtn">back</button>`
-       backBtn=document.getElementById('backBtn');
-      console.log(backBtn);
+      // console.log(correct);
+      starter.innerHTML += `<h3> you got ${correct} out of ${incre - 1} <h3>
+       <button class="btn btn-success" type="button" id="backBtn">back</button>`;
+
+      backBtn = document.getElementById("backBtn");
+      // console.log(backBtn);
       backFunc();
-     // startQuizQuestion.innerHTML=` <button class="btn btn-success" type="button" id="backQuizBtn">Back</button>`
-       //   document.getElementById("createQuizQuestion").style.display = "none";
-    //  document.getElementById("starter").style.display = "block";
-     // backButton=document.getElementById('backBtn');
-     // console.log(backButton);
     }
-    j++;
   });
- 
-    
 };
 
-const backFunc=()=>{
-backBtn.addEventListener('click',(e)=>{
-  console.log('click back');
-      //  document.getElementById("createQuizQuestion").style.display = "none";
-      //  document.getElementById("startQuizQuestion").style.display = "none";
-      // document.getElementById("starter").style.display = "block";
-      location.reload();
-})
-}
+const backFunc = () => {
+  backBtn.addEventListener("click", (e) => {
+    // console.log("click back");
+    location.reload();
+  });
+};
